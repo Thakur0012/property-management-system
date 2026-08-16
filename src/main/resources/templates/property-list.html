@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${criteria.city != null ? 'Properties in ' + criteria.city + ' — PropertyWale' : 'Search Properties — PropertyWale'}">Search Properties</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<section class="bg-white border-bottom">
+  <div class="container py-4">
+    <h1 class="pw-display h3 mb-1">
+      <span th:if="${criteria.city != null and !criteria.city.isBlank()}" th:text="'Properties in ' + ${criteria.city}">Properties</span>
+      <span th:unless="${criteria.city != null and !criteria.city.isBlank()}">All Properties</span>
+    </h1>
+    <p class="text-secondary mb-0" th:text="${results.totalElements} + ' listing(s) found'">0 listings found</p>
+  </div>
+</section>
+
+<div class="container py-4">
+  <div class="row g-4">
+
+    <!-- Filters -->
+    <div class="col-lg-3">
+      <div class="pw-filter-panel">
+        <h6 class="mb-3">Refine search</h6>
+        <form th:action="@{/properties}" method="get" class="vstack gap-3">
+          <div>
+            <label class="form-label small fw-semibold">City</label>
+            <input type="text" name="city" class="form-control" th:value="${criteria.city}" placeholder="e.g. Pune">
+          </div>
+          <div>
+            <label class="form-label small fw-semibold">Area / Locality</label>
+            <input type="text" name="locality" class="form-control" th:value="${criteria.locality}" placeholder="e.g. Kharadi">
+          </div>
+          <div>
+            <label class="form-label small fw-semibold">Property Type</label>
+            <select name="categoryId" class="form-select">
+              <option value="">Any type</option>
+              <option th:each="cat : ${categories}"
+                      th:value="${cat.id}"
+                      th:text="${cat.name}"
+                      th:selected="${criteria.categoryId != null and criteria.categoryId == cat.id}"></option>
+            </select>
+          </div>
+          <div class="row g-2">
+            <div class="col-6">
+              <label class="form-label small fw-semibold">Min Budget (₹)</label>
+              <input type="number" name="minBudget" class="form-control" th:value="${criteria.minBudget}" placeholder="0">
+            </div>
+            <div class="col-6">
+              <label class="form-label small fw-semibold">Max Budget (₹)</label>
+              <input type="number" name="maxBudget" class="form-control" th:value="${criteria.maxBudget}" placeholder="Any">
+            </div>
+          </div>
+          <div>
+            <label class="form-label small fw-semibold">Keyword</label>
+            <input type="text" name="keyword" class="form-control" th:value="${criteria.keyword}" placeholder="Search by name">
+          </div>
+          <button type="submit" class="btn btn-pw-primary w-100 mt-2">
+            <i class="fa-solid fa-filter me-1"></i>Apply Filters
+          </button>
+          <a th:href="@{/properties}" class="btn btn-outline-secondary btn-sm w-100">Clear filters</a>
+        </form>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="col-lg-9">
+      <div th:if="${results.totalElements == 0}" class="pw-empty-state">
+        <i class="fa-solid fa-house-circle-xmark"></i>
+        <h5>No properties match those filters</h5>
+        <p class="mb-0">Try widening your budget range or clearing a filter.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-12 col-md-6 col-xl-4" th:each="p : ${results.content}">
+          <div th:replace="~{fragments/property-card :: card(${p})}"></div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <nav th:if="${results.totalPages > 1}" class="mt-5" aria-label="Property results pages">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" th:classappend="${results.first} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/properties(city=${criteria.city}, locality=${criteria.locality}, categoryId=${criteria.categoryId}, minBudget=${criteria.minBudget}, maxBudget=${criteria.maxBudget}, keyword=${criteria.keyword}, page=${results.number - 1})}">Previous</a>
+          </li>
+          <li class="page-item" th:each="i : ${#numbers.sequence(0, results.totalPages - 1)}" th:classappend="${i == results.number} ? 'active'">
+            <a class="page-link"
+               th:href="@{/properties(city=${criteria.city}, locality=${criteria.locality}, categoryId=${criteria.categoryId}, minBudget=${criteria.minBudget}, maxBudget=${criteria.maxBudget}, keyword=${criteria.keyword}, page=${i})}"
+               th:text="${i + 1}">1</a>
+          </li>
+          <li class="page-item" th:classappend="${results.last} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/properties(city=${criteria.city}, locality=${criteria.locality}, categoryId=${criteria.categoryId}, minBudget=${criteria.minBudget}, maxBudget=${criteria.maxBudget}, keyword=${criteria.keyword}, page=${results.number + 1})}">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="card(p)" class="pw-property-card">
+  <a th:href="@{/properties/{code}(code=${p.propertyCode})}" class="text-decoration-none text-reset">
+    <div class="pw-thumb-wrap">
+      <img th:src="${p.coverImageUrl}" th:alt="${p.name}">
+      <span class="pw-badge-status"
+            th:classappend="${p.status == 'AVAILABLE'} ? 'available' : (${p.status == 'RESERVED'} ? 'reserved' : 'sold')"
+            th:text="${#strings.capitalize(#strings.toLowerCase(p.status))}">Available</span>
+      <span class="pw-badge-featured" th:if="${p.featured}"><i class="fa-solid fa-star"></i> Featured</span>
+    </div>
+    <div class="card-body">
+      <div class="pw-price mb-1" th:text="${'₹' + #numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')}">₹0</div>
+      <h3 class="h6 fw-semibold text-truncate mb-2" th:text="${p.name}">Property name</h3>
+      <div class="pw-meta d-flex flex-wrap gap-3">
+        <span><i class="fa-solid fa-location-dot"></i> <span th:text="${p.locality + ', ' + p.city}">Locality, City</span></span>
+        <span><i class="fa-solid fa-ruler-combined"></i> <span th:text="${p.areaSqft + ' sqft'}">0 sqft</span></span>
+      </div>
+      <div class="pw-meta mt-1"><i class="fa-solid fa-tag"></i> <span th:text="${p.categoryName}">Category</span> · <span th:text="${p.propertyCode}">PW-0000</span></div>
+    </div>
+  </a>
+</div>

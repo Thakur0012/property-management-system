@@ -1,0 +1,33 @@
+<footer xmlns:th="http://www.thymeleaf.org" th:fragment="footer" class="pw-footer text-light pt-5 pb-4 mt-5">
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-md-4">
+        <h5 class="fw-bold"><i class="fa-solid fa-house-chimney-window me-1"></i>Property<span class="text-warning">Wale</span></h5>
+        <p class="text-secondary small mb-0">Find flats, villas, plots, shops and commercial spaces across India. Search, compare and enquire — all in one place.</p>
+      </div>
+      <div class="col-6 col-md-2">
+        <h6 class="fw-semibold">Company</h6>
+        <ul class="list-unstyled small">
+          <li><a th:href="@{/about}" class="footer-link">About Us</a></li>
+          <li><a th:href="@{/contact}" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-3">
+        <h6 class="fw-semibold">Explore</h6>
+        <ul class="list-unstyled small">
+          <li><a th:href="@{/properties}" class="footer-link">All Properties</a></li>
+          <li><a th:href="@{/properties(featured=true)}" class="footer-link">Featured Listings</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h6 class="fw-semibold">Contact</h6>
+        <ul class="list-unstyled small text-secondary">
+          <li><i class="fa-solid fa-envelope me-2"></i>support@propertywale.example</li>
+          <li><i class="fa-solid fa-phone me-2"></i>+91-98000-00000</li>
+        </ul>
+      </div>
+    </div>
+    <hr class="border-secondary">
+    <p class="text-center small text-secondary mb-0">&copy; <span th:text="${#dates.year(#dates.createNow())}">2026</span> PropertyWale. All rights reserved.</p>
+  </div>
+</footer>

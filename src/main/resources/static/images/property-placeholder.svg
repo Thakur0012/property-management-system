@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" width="800" height="533">
+  <rect width="800" height="533" fill="#f7f4ee"/>
+  <g fill="none" stroke="#c9c2ae" stroke-width="3">
+    <rect x="220" y="220" width="360" height="220" />
+    <polygon points="220,220 400,110 580,220" />
+    <rect x="380" y="330" width="60" height="110" />
+  </g>
+  <text x="400" y="480" font-family="sans-serif" font-size="20" fill="#a8a08c" text-anchor="middle">
+    Image coming soon
+  </text>
+</svg>
